@@ -1,0 +1,32 @@
+name: DSpace CI/CD
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Java
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+
+    - name: Build DSpace
+      run: |
+        cd dspace
+        ./dspace/bin/dspace update
+
+    - name: Deploy DSpace
+      run: |
+        cd dspace
+        ./dspace/bin/dspace reload
